@@ -21,33 +21,9 @@ namespace XboxDns
             return Nic;
         }
 
-        //private void setDns(NetworkInterface NIC, string? DNS)
-        //{
-        //    ManagementClass objMC = new ManagementClass("Win32_NetworkAdapterConfiguration");
-        //    ManagementObjectCollection objMOC = objMC.GetInstances();
-
-        //    foreach (ManagementObject objMO in objMOC)
-        //    {
-        //        if ((bool)objMO["IPEnabled"])
-        //        {
-        //            if (objMO["Caption"].ToString().Contains(NIC.Description))
-        //            {
-        //                ManagementBaseObject newDNS =
-        //                  objMO.GetMethodParameters("SetDNSServerSearchOrder");
-        //                if (newDNS != null)
-        //                {
-        //                    newDNS["DNSServerSearchOrder"] = DNS?.Split(',');
-        //                    objMO.InvokeMethod("SetDNSServerSearchOrder", newDNS, null);
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
-
         public void SetDNS(string PrimaryIP, string SecondaryIP)
         {
             SimpleExec.Command.Run("powershell", $@"Get-NetConnectionProfile | select interfaceindex | % {{$ix = $_.interfaceindex.tostring(); Set-DnsClientServerAddress -InterfaceIndex $ix -ServerAddresses ('{PrimaryIP}','{SecondaryIP}')}}", createNoWindow: true);
-            //setDns(getActiveEthernetOrWifiNetworkInterface(), $"{PrimaryIP},{SecondaryIP}");
         }
 
         public string GetDNS()
@@ -58,6 +34,7 @@ namespace XboxDns
         public void ResetDNS()
         {
             SimpleExec.Command.Run("powershell", @"Get-NetConnectionProfile | select interfaceindex | % {$ix = $_.interfaceindex.tostring(); Set-DnsClientServerAddress -InterfaceIndex $ix -ResetServerAddresses}", createNoWindow: true);
+            SimpleExec.Command.Run("powershell", @"ipconfig /flushdns", createNoWindow: true);
         }
 
         public string GetActiveNetwork()

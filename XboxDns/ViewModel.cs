@@ -99,8 +99,12 @@ namespace XboxDns
             {
                 return new Commander(x =>
                 {
-                    Dns dns = (Dns)x;
-                    UpdateDnsCollection(new DnsYamler().DeleteDns(dns));
+                    var result = MessageBox.Show("Are you sure?", "Delete DNS", MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No);
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        Dns dns = (Dns)x;
+                        UpdateDnsCollection(new DnsYamler().DeleteDns(dns));
+                    }
                 });
             }
         }

@@ -85,11 +85,11 @@
         </Grid>
         <Grid Grid.Row="3">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="316*"/>
-                <ColumnDefinition Width="69*"/>
+                <ColumnDefinition Width="241*"/>
+                <ColumnDefinition Width="144*"/>
             </Grid.ColumnDefinitions>
             <TextBlock Text="{Binding StringFormat='Active Network: {0}' ,Path=ActiveNetwork}" FontWeight="Bold" Padding="0" FontSize="9" Grid.Column="0" />
-            <TextBlock Text="@rezamoradix" Foreground="Green" Padding="0" FontSize="9" Grid.Column="1" TextAlignment="Right" MouseUp="TextBlock_MouseUp" Cursor="Hand" />
+            <TextBlock Text="https://github.com/rezamoradix" Foreground="Green" Padding="0" FontSize="9" Grid.Column="1" TextAlignment="Right" />
         </Grid>
     </Grid>
 </Window>

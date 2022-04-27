@@ -11,19 +11,20 @@ namespace XboxDns
 {
     public class DnsYamler
     {
+        static string DnsYamlLocation = AppDomain.CurrentDomain.BaseDirectory + "\\dns.yaml";
         public List<Dns>? GetDnsList()
         {
-            if (File.Exists("dns.yaml"))
+            if (File.Exists(DnsYamlLocation))
             {
-                return (List<Dns>?)new Deserializer().Deserialize(File.ReadAllText("dns.yaml"), typeof(List<Dns>));
+                return (List<Dns>?) new Deserializer().Deserialize(File.ReadAllText(DnsYamlLocation), typeof(List<Dns>));
             }
             return null;
         }
 
         private void writeDnsYamlFile(List<Dns> dnsList)
         {
-            if (File.Exists("dns.yaml")) File.Delete("dns.yaml");
-            using (TextWriter tw = File.CreateText("dns.yaml"))
+            if (File.Exists(DnsYamlLocation)) File.Delete(DnsYamlLocation);
+            using (TextWriter tw = File.CreateText(DnsYamlLocation))
             {
                 new Serializer().Serialize(tw, dnsList, typeof(List<Dns>));
             }
