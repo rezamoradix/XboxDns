@@ -1,45 +1,56 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Management;
+﻿using System.Linq;
 using System.Net.NetworkInformation;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 
 namespace XboxDns
 {
     public class DnsManager
     {
-        private NetworkInterface getActiveEthernetOrWifiNetworkInterface()
+        private NetworkInterface? GetActiveEthernetOrWifiNetworkInterface()
         {
-            var Nic = NetworkInterface.GetAllNetworkInterfaces().FirstOrDefault(
+            var nic = NetworkInterface.GetAllNetworkInterfaces().FirstOrDefault(
                 a => a.OperationalStatus == OperationalStatus.Up &&
                 (a.NetworkInterfaceType == NetworkInterfaceType.Wireless80211 || a.NetworkInterfaceType == NetworkInterfaceType.Ethernet) &&
                 a.GetIPProperties().GatewayAddresses.Any(g => g.Address.AddressFamily.ToString() == "InterNetwork"));
 
-            return Nic;
+            return nic;
         }
 
-        public void SetDNS(string PrimaryIP, string SecondaryIP)
+        public void SetDns(string? primaryIp, string? secondaryIp)
         {
-            SimpleExec.Command.Run("powershell", $@"Get-NetConnectionProfile | select interfaceindex | % {{$ix = $_.interfaceindex.tostring(); Set-DnsClientServerAddress -InterfaceIndex $ix -ServerAddresses ('{PrimaryIP}','{SecondaryIP}')}}", createNoWindow: true);
+            SimpleExec.Command.Run("powershell", $@"Get-NetConnectionProfile | select interfaceindex | % {{$ix = $_.interfaceindex.tostring(); Set-DnsClientServerAddress -InterfaceIndex $ix -ServerAddresses ('{primaryIp}','{secondaryIp}')}}", createNoWindow: true);
         }
 
-        public string GetDNS()
+        public string? GetDns()
         {
-            return string.Join(',', getActiveEthernetOrWifiNetworkInterface().GetIPProperties().DnsAddresses);
+            var ipAddressCollection = GetActiveEthernetOrWifiNetworkInterface()?.GetIPProperties().DnsAddresses;
+
+            return ipAddressCollection != null ? string.Join(',', ipAddressCollection) : null;
         }
 
-        public void ResetDNS()
+        public void ResetDns()
         {
             SimpleExec.Command.Run("powershell", @"Get-NetConnectionProfile | select interfaceindex | % {$ix = $_.interfaceindex.tostring(); Set-DnsClientServerAddress -InterfaceIndex $ix -ResetServerAddresses}", createNoWindow: true);
             SimpleExec.Command.Run("powershell", @"ipconfig /flushdns", createNoWindow: true);
         }
 
-        public string GetActiveNetwork()
+        public string? GetActiveNetwork()
         {
-            return getActiveEthernetOrWifiNetworkInterface().Name;
+            return GetActiveEthernetOrWifiNetworkInterface()?.Name;
+        }
+
+        public void FlushDns()
+        {
+            SimpleExec.Command.Run("powershell", @"ipconfig /flushdns", createNoWindow: true);
+        }
+
+        public void ReleaseIp()
+        {
+            SimpleExec.Command.Run("powershell", @"ipconfig /release", createNoWindow: true);
+        }
+
+        public void RenewIp()
+        {
+            SimpleExec.Command.Run("powershell", @"ipconfig /renew", createNoWindow: true);
         }
     }
 }

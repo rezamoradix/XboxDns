@@ -11,11 +11,11 @@ namespace XboxDns
     {
         public event EventHandler? CanExecuteChanged;
 
-        Action<object?> action;
+        readonly Action<object?> _action;
 
         public Commander(Action<object?> action)
         {
-            this.action = action;
+            this._action = action;
         }
 
         public bool CanExecute(object? parameter)
@@ -25,7 +25,7 @@ namespace XboxDns
 
         public void Execute(object? parameter)
         {
-            action(parameter);
+            _action(parameter);
         }
     }
 }

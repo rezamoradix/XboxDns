@@ -3,10 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using YamlDotNet.Serialization;
-using System.IO;
 using System.Windows.Input;
 using System.Windows;
 
@@ -15,79 +11,94 @@ namespace XboxDns
     public class ViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged;
-        ObservableCollection<Dns> dnsCollection = new ObservableCollection<Dns>();
+        ObservableCollection<Dns> _dnsCollection = new ObservableCollection<Dns>();
 
-        public ObservableCollection<Dns> DNSCollection { get { return dnsCollection; } set { dnsCollection = value; OnProp("DNSCollection"); } }
+        public ObservableCollection<Dns> DnsCollection { get => _dnsCollection;
+            set { _dnsCollection = value; OnProp("DNSCollection"); } }
 
-        public string ActiveNetwork
+        public string? ActiveNetwork => new DnsManager().GetActiveNetwork();
+
+        private string? _newDnsName;
+        public string? NewDnsName
         {
-            get
-            {
-                return new DnsManager().GetActiveNetwork();
-            }
+            get => _newDnsName;
+            set { _newDnsName = value; OnProp("NewDnsName"); }
         }
 
-        private string newDnsName;
-
-        public string NewDnsName
+        private string? _newDnsPrimaryIp;
+        public string? NewDnsPrimaryIp
         {
-            get { return newDnsName; }
-            set { newDnsName = value; OnProp("NewDnsName"); }
+            get => _newDnsPrimaryIp;
+            set { _newDnsPrimaryIp = value; OnProp("NewDnsPrimaryIP"); }
         }
 
-        private string newDnsPrimaryIP;
+        private string? _newDnsSecondaryIp = "0.0.0.0";
 
-        public string NewDnsPrimaryIP
+        public string? NewDnsSecondaryIp
         {
-            get { return newDnsPrimaryIP; }
-            set { newDnsPrimaryIP = value; OnProp("NewDnsPrimaryIP"); }
-        }
-
-        private string newDnsSecondaryIP = "0.0.0.0";
-
-        public string NewDnsSecondaryIP
-        {
-            get { return newDnsSecondaryIP; }
-            set { newDnsSecondaryIP = value; OnProp("NewDnsSecondaryIP"); }
+            get => _newDnsSecondaryIp;
+            set { _newDnsSecondaryIp = value; OnProp("NewDnsSecondaryIP"); }
         }
 
         #region Commands
         public ICommand ResetDnsCommand { get; set; } = new Commander(x =>
         {
             DnsManager dnsManager = new DnsManager();
-            dnsManager.ResetDNS();
+            dnsManager.ResetDns();
             MessageBox.Show("DNS reset successfully!");
+        });
+
+        public ICommand FlushDnsCommand { get; set; } = new Commander(x =>
+        {
+            DnsManager dnsManager = new DnsManager();
+            dnsManager.FlushDns();
+            MessageBox.Show("DNS Cache flushed successfully!");
+        });
+
+        public ICommand ReleaseIpCommand { get; set; } = new Commander(x =>
+        {
+            DnsManager dnsManager = new DnsManager();
+            dnsManager.ReleaseIp();
+            MessageBox.Show("IP released successfully!");
+        });
+
+        public ICommand RenewIpCommand { get; set; } = new Commander(x =>
+        {
+            DnsManager dnsManager = new DnsManager();
+            dnsManager.RenewIp();
+            MessageBox.Show("IP renewed successfully!");
         });
 
         public ICommand ApplyDnsCommand { get; set; } = new Commander(x =>
         {
-            Dns dns = (Dns)x;
+            var dns = (Dns) x!;
             DnsManager dnsManager = new DnsManager();
-            dnsManager.SetDNS(dns.PrimaryIP, dns.SecondaryIP);
+            dnsManager.SetDns(dns.PrimaryIP, dns.SecondaryIP);
             MessageBox.Show("DNS applied!");
         });
+
         public ICommand SaveDnsCommand
         {
             get
             {
                 return new Commander(x =>
                 {
-                    if (!ValidateIPv4(NewDnsPrimaryIP))
+                    if (!ValidateIPv4(NewDnsPrimaryIp))
                     {
                         MessageBox.Show("PrimaryIP is not valid");
                         return;
                     }
-                    if (!ValidateIPv4(NewDnsSecondaryIP))
+                    if (!ValidateIPv4(NewDnsSecondaryIp))
                     {
                         MessageBox.Show("SecondaryIP is not valid");
                         return;
                     }
-                    if (string.IsNullOrEmpty(NewDnsName.Trim()))
+                    if (string.IsNullOrEmpty(NewDnsName?.Trim()))
                     {
                         MessageBox.Show("Name is empty");
                         return;
                     }
-                    Dns dns = new Dns { Name = NewDnsName.Trim(), PrimaryIP = NewDnsPrimaryIP, SecondaryIP = NewDnsSecondaryIP };
+                    Dns dns = new Dns { Name = NewDnsName.Trim(), PrimaryIP = NewDnsPrimaryIp, SecondaryIP = NewDnsSecondaryIp };
                     UpdateDnsCollection(new DnsYamler().AddDns(dns));
                 });
             }
@@ -102,7 +113,7 @@ namespace XboxDns
                     var result = MessageBox.Show("Are you sure?", "Delete DNS", MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No);
                     if (result == MessageBoxResult.Yes)
                     {
-                        Dns dns = (Dns)x;
+                        Dns dns = (Dns)x!;
                         UpdateDnsCollection(new DnsYamler().DeleteDns(dns));
                     }
                 });
@@ -115,9 +126,9 @@ namespace XboxDns
             UpdateDnsCollection(new DnsYamler().GetDnsList());
         }
 
-        void UpdateDnsCollection(List<Dns> dnsList)
+        void UpdateDnsCollection(List<Dns>? dnsList)
         {
-            if (dnsList != null) DNSCollection = new ObservableCollection<Dns>(dnsList);
+            if (dnsList != null) DnsCollection = new ObservableCollection<Dns>(dnsList);
         }
 
         void OnProp(string name)
@@ -125,7 +136,7 @@ namespace XboxDns
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
-        private bool ValidateIPv4(string ipString)
+        private bool ValidateIPv4(string? ipString)
         {
             if (String.IsNullOrWhiteSpace(ipString))
             {

@@ -8,8 +8,8 @@ namespace XboxDns
 {
     public class Dns
     {
-        public string Name { get; set; }
-        public string PrimaryIP { get; set; }
-        public string SecondaryIP { get; set; }
+        public string? Name { get; set; }
+        public string? PrimaryIP { get; set; }
+        public string? SecondaryIP { get; set; }
     }
 }

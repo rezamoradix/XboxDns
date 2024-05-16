@@ -1,0 +1,75 @@
+- Name: shecan
+  PrimaryIP: 178.22.122.100
+  SecondaryIP: 185.51.200.2
+- Name: google
+  PrimaryIP: 8.8.8.8
+  SecondaryIP: 8.8.4.4
+- Name: cloudflare
+  PrimaryIP: 1.1.1.1
+  SecondaryIP: 1.0.0.1
+- Name: electro
+  PrimaryIP: 185.231.182.126
+  SecondaryIP: 37.152.182.112
+- Name: unkown1
+  PrimaryIP: 88.135.36.247
+  SecondaryIP: 0.0.0.0
+- Name: begzar
+  PrimaryIP: 185.55.226.26
+  SecondaryIP: 185.55.225.25
+- Name: AdGuard
+  PrimaryIP: 94.140.14.14
+  SecondaryIP: 94.140.15.15
+- Name: AdGuard (with ads and trackers)
+  PrimaryIP: 94.140.14.140
+  SecondaryIP: 94.140.14.141
+- Name: Pishgaman
+  PrimaryIP: 46.224.1.221
+  SecondaryIP: 46.224.1.220
+- Name: Verizon
+  PrimaryIP: 4.2.2.1
+  SecondaryIP: 4.2.2.2
+- Name: electro-NEW
+  PrimaryIP: 78.157.42.101
+  SecondaryIP: 78.157.42.100
+- Name: Eisa
+  PrimaryIP: 10.202.10.10
+  SecondaryIP: 10.202.10.11
+- Name: Eisa403
+  PrimaryIP: 10.202.10.202
+  SecondaryIP: 10.202.10.102
+- Name: Eisa403Premium
+  PrimaryIP: 10.202.10.100
+  SecondaryIP: 10.202.10.200
+- Name: ForeignTest
+  PrimaryIP: 185.211.79.32
+  SecondaryIP: 0.0.0.0
+- Name: IranTest
+  PrimaryIP: 213.108.242.87
+  SecondaryIP: 0.0.0.0
+- Name: Gcore
+  PrimaryIP: 95.85.95.85
+  SecondaryIP: 2.56.220.2
+- Name: OpenDNS
+  PrimaryIP: 208.67.222.222
+  SecondaryIP: 208.67.220.220
+- Name: NewPishgaman
+  PrimaryIP: 5.202.100.100
+  SecondaryIP: 5.202.100.101
+- Name: RDNS1
+  PrimaryIP: 172.86.64.44
+  SecondaryIP: 0.0.0.0
+- Name: UtraDNS
+  PrimaryIP: 64.6.64.6
+  SecondaryIP: 64.6.65.6
+- Name: UtraDNS 2
+  PrimaryIP: 156.154.70.2
+  SecondaryIP: 156.154.71.2
+- Name: Shelter 1
+  PrimaryIP: ' 94.156.65.130'
+  SecondaryIP: ' 94.156.65.133'
+- Name: Shelter 2
+  PrimaryIP: 91.92.249.227
+  SecondaryIP: 0.0.0.0
+- Name: Shelter 3
+  PrimaryIP: 91.92.247.146
+  SecondaryIP: 91.92.247.155

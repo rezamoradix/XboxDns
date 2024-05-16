@@ -5,13 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:XboxDns"
         mc:Ignorable="d"
-        Title="XBOX DNS Setter" Height="510" Width="395" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen">
+        Title="XBOX DNS Setter" Height="520" Width="395" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen">
 
     <Grid Margin="5">
         <Grid.RowDefinitions>
             <RowDefinition Height="45*"/>
-            <RowDefinition Height="379*"/>
-            <RowDefinition Height="45*"/>
+            <RowDefinition Height="360*"/>
+            <RowDefinition Height="70*"/>
             <RowDefinition Height="12*"/>
         </Grid.RowDefinitions>
         <Grid Margin="0,0,0,10" Grid.Row="0">
@@ -43,8 +43,8 @@
                 <Button Grid.Column="3" FontSize="10" Content="Save" Command="{Binding SaveDnsCommand}" TabIndex="3"/>
             </Grid>
         </Grid>
-        <ScrollViewer Grid.Row="1" Margin="0,7,0,0">
-            <ItemsControl ItemsSource="{Binding DNSCollection}" x:Name="coll">
+        <ScrollViewer Grid.Row="1" Margin="0,0,0,0">
+            <ItemsControl ItemsSource="{Binding DnsCollection}" x:Name="coll">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <WrapPanel ItemWidth="170"></WrapPanel>
@@ -81,7 +81,20 @@
 
         </ScrollViewer>
         <Grid Margin="0 5" Grid.Row="2">
+            <Grid.ColumnDefinitions >
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions >
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
             <Button Content="Reset DNS" Command="{Binding ResetDnsCommand}" />
+            <Button Grid.Column="1" Grid.Row="0" Content="Flush DNS Cache" Command="{Binding FlushDnsCommand}" />
+
+            <Button Grid.Column="0" Grid.Row="1" Content="Release IP" Command="{Binding ReleaseIpCommand}" />
+            <Button Grid.Column="1" Grid.Row="1" Content="Renew IP" Command="{Binding RenewIpCommand}" />
+
         </Grid>
         <Grid Grid.Row="3">
             <Grid.ColumnDefinitions>
