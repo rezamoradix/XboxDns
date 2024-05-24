@@ -10,8 +10,10 @@ namespace XboxDns
 {
     public class ViewModel : INotifyPropertyChanged
     {
+        private const string ZeroSecondaryDnsAddress = "0.0.0.0";
+
         public event PropertyChangedEventHandler? PropertyChanged;
-        ObservableCollection<Dns> _dnsCollection = new ObservableCollection<Dns>();
+        ObservableCollection<Dns> _dnsCollection = new();
 
         public ObservableCollection<Dns> DnsCollection { get => _dnsCollection;
             set { _dnsCollection = value; OnProp("DNSCollection"); } }
@@ -32,7 +34,7 @@ namespace XboxDns
             set { _newDnsPrimaryIp = value; OnProp("NewDnsPrimaryIP"); }
         }
 
-        private string? _newDnsSecondaryIp = "0.0.0.0";
+        private string? _newDnsSecondaryIp;
 
         public string? NewDnsSecondaryIp
         {
@@ -98,8 +100,13 @@ namespace XboxDns
                         MessageBox.Show("Name is empty");
                         return;
                     }
+
                     Dns dns = new Dns { Name = NewDnsName.Trim(), PrimaryIP = NewDnsPrimaryIp, SecondaryIP = NewDnsSecondaryIp };
                     UpdateDnsCollection(new DnsYamler().AddDns(dns));
+
+                    NewDnsName = string.Empty;
+                    NewDnsPrimaryIp = string.Empty;
+                    NewDnsSecondaryIp = ZeroSecondaryDnsAddress;
                 });
             }
         }
@@ -123,6 +130,7 @@ namespace XboxDns
 
         public ViewModel()
         {
+            NewDnsSecondaryIp = ZeroSecondaryDnsAddress;
             UpdateDnsCollection(new DnsYamler().GetDnsList());
         }
 

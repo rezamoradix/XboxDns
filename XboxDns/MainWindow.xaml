@@ -7,6 +7,10 @@
         mc:Ignorable="d"
         Title="XBOX DNS Setter" Height="520" Width="395" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen">
 
+    <Window.DataContext>
+        <local:ViewModel />
+    </Window.DataContext>
+
     <Grid Margin="5">
         <Grid.RowDefinitions>
             <RowDefinition Height="45*"/>
@@ -38,8 +42,8 @@
                     <ColumnDefinition Width="1*" />
                 </Grid.ColumnDefinitions>
                 <TextBox Grid.Column="0" FontSize="10" Text="{Binding Path=NewDnsName,Mode=TwoWay}" TabIndex="0"/>
-                <TextBox Grid.Column="1" FontSize="10" Text="{Binding Path=NewDnsPrimaryIP,Mode=TwoWay}" TabIndex="1"/>
-                <TextBox Grid.Column="2" FontSize="10" Text="{Binding Path=NewDnsSecondaryIP,Mode=TwoWay}" TabIndex="2"/>
+                <TextBox Grid.Column="1" FontSize="10" Text="{Binding Path=NewDnsPrimaryIp,Mode=TwoWay}" TabIndex="1"/>
+                <TextBox Grid.Column="2" FontSize="10" Text="{Binding Path=NewDnsSecondaryIp,Mode=TwoWay}" TabIndex="2"/>
                 <Button Grid.Column="3" FontSize="10" Content="Save" Command="{Binding SaveDnsCommand}" TabIndex="3"/>
             </Grid>
         </Grid>
